@@ -11,10 +11,17 @@
 Vagrant.configure("2") do |config|
   config.vm.box = "bento/centos-7"
   config.vm.network "private_network", ip: "192.168.100.100"
-  config.vm.synced_folder "./magento", "/data/magento",
-		    rsync__exclude: [".git/",".settings/","public/var/", "public/pub/"],
-		    owner: "vagrant", group:"apache"
+  
+  config.vm.provider "virtualbox" do |v|
+	  v.memory = 2048
+	  v.cpus = 2
+  end
+  
+  # Uncomment lines 21 and 22 after provision
+  #config.vm.synced_folder "./magento", "/data/magento",
+  #	    rsync__exclude: [".git/",".settings/","public/var/", "public/pub/"] , owner: "vagrant", group:"apache"
+  
   config.vm.host_name = "teststore.magento.local"
-  config.vm.provision "shell", path: "provision.sh"
+  config.vm.provision "shell", path: "provision/provision.sh"
 
 end

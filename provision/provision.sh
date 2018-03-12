@@ -9,7 +9,7 @@ yum -y update
 # ------------------------------------------------------------------------------------------ #
 
 echo "Intalling  Common tools: START"
-yum install -y yum-utils mc wget nano java-1.8.0-openjdk.x86_64 lsof epel-release
+yum install -y yum-utils wget nano java-1.8.0-openjdk.x86_64 lsof epel-release
 echo "Intalling  Common tools: COMPLETE"
 
 # ------------------------------------------------------------------------------------------ #
@@ -21,8 +21,14 @@ yum install -y httpd
 systemctl enable httpd.service
 systemctl start httpd.service
 yum install -y openssl mod_ssl
-systemctl restart httpd
+
 echo "Installing Apache: COMPLETE"
+#change apache user to vagrant
+sed -i -r -e 's/User apache/User vagrant/g' /etc/httpd/conf/httpd.conf
+sudo cp /vagrant/provision/certificates/local.crt /etc/pki/tls/certs/
+sudo cp /vagrant/provision/certificates/local.key /etc/pki/tls/certs/
+cp /vagrant/provision/config/00_teststore.magento.local.conf /etc/httpd/conf.d/
+systemctl restart httpd
 
 # ------------------------------------------------------------------------------------------ #
 
@@ -111,5 +117,6 @@ echo "Povision: COMPLETE!!! :)"
 ### ---------------------------------- SETUP ---------------------------------- #
 
 mysql -uroot -e "CREATE DATABASE IF NOT EXISTS magento"
+
 
 #EOF
