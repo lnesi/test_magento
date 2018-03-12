@@ -18,8 +18,8 @@ Vagrant.configure("2") do |config|
   end
   
   # Uncomment lines 21 and 22 after provision
-  #config.vm.synced_folder "./magento", "/data/magento",
-  #	    rsync__exclude: [".git/",".settings/","public/var/", "public/pub/"] , owner: "vagrant", group:"apache"
+  config.vm.synced_folder "./magento", "/data/magento",
+  	    rsync__exclude: [".git/",".settings/","public/var/", "public/pub/"] , owner: "vagrant", group:"apache"
   
   config.vm.host_name = "teststore.magento.local"
   config.vm.provision "shell", path: "provision/provision.sh"
